@@ -35,4 +35,4 @@ npm run dev
 2. 저장소의 **Settings > Pages**에서 배포 소스를 **GitHub Actions**로 선택합니다.
 3. `main` 브랜치에 push하면 `.github/workflows/deploy.yml`이 앱을 빌드하고 Pages에 배포합니다.
 
-사용자/조직 사이트 저장소 이름을 `ourday-note.github.io`로 만들면 주소는 `https://ourday-note.github.io/`가 됩니다. 다른 저장소 이름을 쓰면 보통 `https://ourday-note.github.io/저장소이름/` 형태가 됩니다.
+사용자/조직 사이트 저장소 이름을 `ourday-note.github.io`로 만들고, 청첩장은 `https://ourday-note.github.io/our-wedding/` 경로로 배포합니다.

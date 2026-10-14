@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ArrowUpRight, CalendarDays, Check, ChevronDown, Copy, Heart, MapPin, Navigation, Share2, Train, Car, X } from 'lucide-react';
+import { ArrowUpRight, CalendarDays, Check, ChevronDown, Copy, Heart, Link, MapPin, MessageCircle, Navigation, Train, Car } from 'lucide-react';
 import { wedding } from './config';
 
 const formatDate = new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long', timeZone: 'Asia/Seoul' });
@@ -48,7 +48,6 @@ function SectionTitle({ kicker, title }: { kicker: string, title: string }) {
 export default function App() {
   const [expanded, setExpanded] = useState<'신랑측' | '신부측' | null>(null);
   const [toast, setToast] = useState('');
-  const [showGuide, setShowGuide] = useState(false);
 
   useEffect(() => {
     if (!toast) return;
@@ -77,6 +76,7 @@ export default function App() {
       <section className="intro section-pad"><SectionTitle kicker="INVITATION" title="소중한 분들을 초대합니다" />
         <p className="invitation-message">서로의 하루를 궁금해하고<br/>작은 순간에도 함께 웃는 두 사람이<br/>이제 평생을 함께하려 합니다.<br/><br/>저희의 새로운 시작에 귀한 걸음 하시어<br/>따뜻한 축복을 나누어 주시면 감사하겠습니다.</p>
         <div className="family"><p><span>신랑</span> {wedding.groomParents} <em>의 아들</em> <b>{wedding.groom}</b></p><p><span>신부</span> {wedding.brideParents} <em>의 딸</em> <b>{wedding.bride}</b></p></div>
+        <figure className="story-photo"><img src={wedding.storyPhoto} alt={`${wedding.groom} ${wedding.bride} 웨딩 스냅 사진`} /></figure>
       </section>
       <section className="schedule section-pad"><SectionTitle kicker="THE DAY" title="우리의 특별한 날" /><p className="schedule-date">{wedding.date.replaceAll('-', '. ')} <span>{new Intl.DateTimeFormat('en-US', { weekday: 'long', timeZone: 'Asia/Seoul' }).format(weddingDay).toUpperCase()}</span></p><p className="schedule-time">{`오후 ${Number(wedding.time.split(':')[0]) - 12}시 ${Number(wedding.time.split(':')[1])}분`}</p><Calendar /><a className="outlined-button" href={calendarUrl} target="_blank" rel="noreferrer"><CalendarDays size={17} /> 구글 캘린더에 저장 <ArrowUpRight size={15} /></a></section>
       <section className="location section-pad"><SectionTitle kicker="LOCATION" title="오시는 길"/><p className="venue-name">{wedding.venue}</p><p className="venue-info">{wedding.venueDetail}<br/>{wedding.address}</p>
@@ -87,12 +87,10 @@ export default function App() {
       </section>
       <section className="account section-pad"><SectionTitle kicker="WITH GRATITUDE" title="마음 전하실 곳"/><p className="account-message">직접 축하를 전하지 못하시는 분들을 위해<br/>마음을 전하실 곳을 안내드립니다.</p>
         {wedding.accounts.map((a) => <div className="accordion" key={a.side}><button className="accordion-head" aria-expanded={expanded === a.side} onClick={() => setExpanded(expanded === a.side ? null : a.side)}><span>{a.side} 계좌번호</span><ChevronDown size={18} className={expanded === a.side ? 'rotate' : ''}/></button>{expanded === a.side && <div className="accordion-content"><div><span>{a.owner}</span><small>{a.bank} {a.number || '계좌번호 등록 전'}</small></div><button disabled={!a.number} onClick={() => copy(`${a.bank} ${a.number}`, '계좌번호를 복사했습니다.')}><Copy size={15}/> 복사</button></div>}</div>)}
-        <p className="account-notice">* 현재 계좌번호는 입력되지 않은 샘플입니다.</p>
       </section>
-      <section className="closing"><div className="closing-ornament">✳</div><p>기쁜 날, 소중한 발걸음을 기다립니다.</p><h2>Thank you</h2><span>{wedding.groom} & {wedding.bride}</span></section>
-      <footer><button onClick={share}><Share2 size={17}/> 청첩장 공유하기</button><button onClick={() => copy(window.location.href, '청첩장 링크를 복사했습니다.')}><Copy size={16}/> 링크 복사</button><button className="help" onClick={() => setShowGuide(true)}>안내 <ArrowUpRight size={12}/></button></footer>
+      <section className="closing"><img className="closing-photo" src={wedding.closingPhoto} alt={`${wedding.groom} ${wedding.bride} 야외 웨딩 사진`} /><div className="closing-ornament">✳</div><p>기쁜 날, 소중한 발걸음을 기다립니다.</p><h2>Thank you</h2><span>{wedding.groom} & {wedding.bride}</span></section>
+      <footer><button onClick={share}><MessageCircle size={17} fill="currentColor"/> 카카오톡으로 전달하기</button><button onClick={() => copy(window.location.href, '청첩장 링크를 복사했습니다.')}><Link size={16}/> 청첩장 링크 복사하기</button></footer>
       {toast && <div className="toast" role="status"><Check size={16}/>{toast}</div>}
-      {showGuide && <div className="overlay" onClick={() => setShowGuide(false)}><div className="modal" role="dialog" aria-modal="true" aria-label="샘플 안내" onClick={e => e.stopPropagation()}><button className="close" onClick={() => setShowGuide(false)} aria-label="닫기"><X size={21}/></button><h3>샘플 안내</h3><p>이름, 부모님 성함, 예식 정보와 첨부 사진을 반영했습니다. 계좌번호는 아직 샘플이며 <code>src/config.ts</code>에서 수정할 수 있습니다.</p><p>예식일은 <b>2026년 10월 17일 토요일 오후 1시 40분</b>입니다. 날짜·시간을 변경하려면 <code>src/config.ts</code>에서 수정해 주세요. 달력과 구글 캘린더 링크에 자동 반영됩니다.</p><p>공유 기능은 HTTPS 환경에서 가장 안정적으로 작동합니다.</p></div></div>}
     </main>
   </div>;
 }
