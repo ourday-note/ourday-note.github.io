@@ -94,10 +94,10 @@ export default function App() {
 
   return <div className="desktop-frame">
     <main className="invitation">
-      <header className="top-bar"><span>THE WEDDING OF</span><Heart size={13} strokeWidth={1.4} /></header>
+      <header className="top-bar"><span>The wedding of</span><Heart size={13} strokeWidth={1.4} /></header>
       <section className="hero">
-        <div className="hero-type"><span className="eyebrow">Together, forever</span><h1>{wedding.groom} <small>&</small> {wedding.bride}</h1><p>WE ARE GETTING MARRIED</p></div>
-        <div className="hero-photo"><img src={wedding.photo} alt={`${wedding.groom} ${wedding.bride} 웨딩 사진`} /><div className="photo-shade"/><span className="hero-photo-caption">a beautiful beginning</span></div>
+        <div className="hero-type"><span className="eyebrow">Together, forever</span><h1>{wedding.groom} <small>&</small> {wedding.bride}</h1><p>We are getting married</p></div>
+        <div className="hero-photo"><img src={wedding.photo} alt={`${wedding.groom} ${wedding.bride} 웨딩 사진`} /></div>
         <div className="hero-date"><span>{new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Seoul', month: 'long', day: 'numeric', year: 'numeric' }).format(weddingDay).toUpperCase()}</span><span>{new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Seoul', hour: '2-digit', minute: '2-digit', hour12: true }).format(weddingDay)}</span></div>
       </section>
       <section className="intro section-pad"><SectionTitle kicker="INVITATION" title="소중한 분들을 초대합니다" />
@@ -113,9 +113,9 @@ export default function App() {
         <div className="transport"><div><Train size={18}/><p><strong>대중교통</strong><br/>KTX · 1호선 광명역 1·3번 출구 도보 약 5분</p></div><div><Car size={18}/><p><strong>자가용 및 주차</strong><br/>내비게이션에서 '아이벡스컨벤션' 검색<br/>AK플라자 광명 지하 주차장 이용</p></div></div>
       </section>
       <section className="account section-pad"><SectionTitle kicker="WITH GRATITUDE" title="마음 전하실 곳"/><p className="account-message">직접 축하를 전하지 못하시는 분들을 위해<br/>마음을 전하실 곳을 안내드립니다.</p>
-        {wedding.accounts.map((a) => <div className="accordion" key={a.side}><button className="accordion-head" aria-expanded={expanded === a.side} onClick={() => setExpanded(expanded === a.side ? null : a.side)}><span>{a.side} 계좌번호</span><ChevronDown size={18} className={expanded === a.side ? 'rotate' : ''}/></button>{expanded === a.side && <div className="accordion-content"><div><span>{a.owner}</span><small>{a.bank} {a.number || '계좌번호 등록 전'}</small></div><button disabled={!a.number} onClick={() => copy(`${a.bank} ${a.number}`, '계좌번호를 복사했습니다.')}><Copy size={15}/> 복사</button></div>}</div>)}
+        {wedding.accounts.map((a) => <div className="accordion" key={a.side}><button className="accordion-head" aria-expanded={expanded === a.side} onClick={() => setExpanded(expanded === a.side ? null : a.side)}><span>{a.side} 계좌번호</span><ChevronDown size={18} className={expanded === a.side ? 'rotate' : ''}/></button>{expanded === a.side && <div className="accordion-content"><div><span>{a.owner}</span><small>{a.bank} {a.number || '계좌번호 등록 전'}</small></div><button disabled={!a.number} onClick={() => copy(`${a.bank} ${a.number}`, '계좌번호를 복사했습니다.')}><Copy size={14} strokeWidth={1.4} aria-hidden="true"/> 복사</button></div>}</div>)}
       </section>
-      <section className="closing"><img className="closing-photo" src={wedding.closingPhoto} alt={`${wedding.groom} ${wedding.bride} 야외 웨딩 사진`} /><div className="closing-ornament">✳</div><p>기쁜 날, 소중한 발걸음을 기다립니다.</p><h2>Thank you</h2><span>{wedding.groom} & {wedding.bride}</span></section>
+      <section className="closing"><img className="closing-photo" src={wedding.closingPhoto} alt={`${wedding.groom} ${wedding.bride} 야외 웨딩 사진`} /><p>기쁜 날, 소중한 발걸음을 기다립니다.</p><h2>Thank you</h2><span>{wedding.groom} & {wedding.bride}</span></section>
       <footer className="share-footer"><button className="share-primary" onClick={share}><MessageCircle size={16} strokeWidth={1.4} aria-hidden="true"/> 카카오톡으로 전달하기</button><button onClick={() => copy(window.location.href, '청첩장 링크를 복사했습니다.')}><Link size={16} strokeWidth={1.4} aria-hidden="true"/> 청첩장 링크 복사하기</button></footer>
       {toast && <div className="toast" role="status"><Check size={16}/>{toast}</div>}
     </main>
