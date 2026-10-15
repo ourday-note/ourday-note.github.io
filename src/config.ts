@@ -11,7 +11,6 @@ export const wedding = {
   address: '경기도 광명시 양지로 17',
   venuePhone: '02-897-1002',
   photo: 'story-photo.jpg',
-  storyPhoto: 'story-photo.jpg',
   closingPhoto: 'closing-photo.jpg',
   accounts: [
     { side: '신랑측', owner: '박윤수', bank: '국민은행', number: '362702-04-123254' },

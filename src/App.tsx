@@ -103,7 +103,6 @@ export default function App() {
       <section className="intro section-pad"><SectionTitle kicker="INVITATION" title="소중한 분들을 초대합니다" />
         <p className="invitation-message">서로의 하루를 궁금해하고<br/>작은 순간에도 함께 웃는 두 사람이<br/>이제 평생을 함께하려 합니다.<br/><br/>저희의 새로운 시작에 귀한 걸음 하시어<br/>따뜻한 축복을 나누어 주시면 감사하겠습니다.</p>
         <div className="family"><p><span>신랑</span> {wedding.groomParents} <em>의 아들</em> <b>{wedding.groom}</b></p><p><span>신부</span> {wedding.brideParents} <em>의 딸</em> <b>{wedding.bride}</b></p></div>
-        <figure className="story-photo"><img src={wedding.storyPhoto} alt={`${wedding.groom} ${wedding.bride} 웨딩 스냅 사진`} /></figure>
       </section>
       <section className="schedule section-pad"><SectionTitle kicker="THE DAY" title="우리의 특별한 날" /><p className="schedule-date">{wedding.date.replaceAll('-', '. ')} <span>{new Intl.DateTimeFormat('en-US', { weekday: 'long', timeZone: 'Asia/Seoul' }).format(weddingDay).toUpperCase()}</span></p><p className="schedule-time">{`오후 ${Number(wedding.time.split(':')[0]) - 12}시 ${Number(wedding.time.split(':')[1])}분`}</p><Calendar /><a className="outlined-button" href={calendarUrl} target="_blank" rel="noreferrer"><CalendarDays size={17} /> 구글 캘린더에 저장 <ArrowUpRight size={15} /></a></section>
       <section className="countdown-section"><Countdown /></section>
