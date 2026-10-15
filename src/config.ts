@@ -10,11 +10,11 @@ export const wedding = {
   venueDetail: 'AK플라자 광명점 5층',
   address: '경기도 광명시 양지로 17',
   venuePhone: '02-897-1002',
-  photo: 'wedding-photo.png',
+  photo: 'story-photo.jpg',
   storyPhoto: 'story-photo.jpg',
   closingPhoto: 'closing-photo.jpg',
   accounts: [
-    { side: '신랑측', owner: '박윤수', bank: '은행명', number: '' },
-    { side: '신부측', owner: '김서현', bank: '은행명', number: '' },
+    { side: '신랑측', owner: '박윤수', bank: '국민은행', number: '362702-04-123254' },
+    { side: '신부측', owner: '김서현', bank: '우리은행', number: '1002-966-339636' },
   ],
 } as const;

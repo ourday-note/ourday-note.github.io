@@ -45,6 +45,33 @@ function SectionTitle({ kicker, title }: { kicker: string, title: string }) {
   return <div className="section-title"><span className="kicker">{kicker}</span><h2>{title}</h2><i aria-hidden="true" /></div>;
 }
 
+function Countdown() {
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const seconds = Math.max(0, Math.ceil((weddingDay.getTime() - now) / 1000));
+  const units = [
+    { label: 'DAYS', name: '일', value: Math.floor(seconds / 86400) },
+    { label: 'HOUR', name: '시간', value: Math.floor(seconds / 3600) % 24 },
+    { label: 'MIN', name: '분', value: Math.floor(seconds / 60) % 60 },
+    { label: 'SEC', name: '초', value: seconds % 60 },
+  ];
+  const seoulOffset = 9 * 60 * 60 * 1000;
+  const daysUntil = Math.floor((weddingDay.getTime() + seoulOffset) / 86400000)
+    - Math.floor((now + seoulOffset) / 86400000);
+
+  return <div className="countdown" role="group" aria-label="결혼식까지 남은 시간">
+    <div className="countdown-clock" role="timer" aria-live="off" aria-label={units.map(({ name, value }) => `${value}${name}`).join(' ')}>
+      {units.map(({ label, value }) => <div className="countdown-unit" key={label} aria-hidden="true"><span className="countdown-number">{String(value).padStart(2, '0')}</span><span className="countdown-label">{label}</span></div>)}
+    </div>
+    <p className="countdown-message">{wedding.groom} <span className="countdown-heart" aria-label="그리고">♥</span> {wedding.bride}의 결혼식{seconds === 0 ? '이 시작되었습니다.' : daysUntil === 0 ? <>이 <strong>오늘</strong>입니다.</> : <>이 <strong>{daysUntil}일</strong> 남았습니다.</>}</p>
+  </div>;
+}
+
 export default function App() {
   const [expanded, setExpanded] = useState<'신랑측' | '신부측' | null>(null);
   const [toast, setToast] = useState('');
@@ -79,6 +106,7 @@ export default function App() {
         <figure className="story-photo"><img src={wedding.storyPhoto} alt={`${wedding.groom} ${wedding.bride} 웨딩 스냅 사진`} /></figure>
       </section>
       <section className="schedule section-pad"><SectionTitle kicker="THE DAY" title="우리의 특별한 날" /><p className="schedule-date">{wedding.date.replaceAll('-', '. ')} <span>{new Intl.DateTimeFormat('en-US', { weekday: 'long', timeZone: 'Asia/Seoul' }).format(weddingDay).toUpperCase()}</span></p><p className="schedule-time">{`오후 ${Number(wedding.time.split(':')[0]) - 12}시 ${Number(wedding.time.split(':')[1])}분`}</p><Calendar /><a className="outlined-button" href={calendarUrl} target="_blank" rel="noreferrer"><CalendarDays size={17} /> 구글 캘린더에 저장 <ArrowUpRight size={15} /></a></section>
+      <section className="countdown-section"><Countdown /></section>
       <section className="location section-pad"><SectionTitle kicker="LOCATION" title="오시는 길"/><p className="venue-name">{wedding.venue}</p><p className="venue-info">{wedding.venueDetail}<br/>{wedding.address}</p>
         <div className="map-visual" role="img" aria-label="지도 서비스 길찾기 버튼으로 연결되는 예식장 위치 안내"><div className="map-lines"/><div className="map-pin"><MapPin size={24} fill="currentColor"/></div><strong>IVEX CONVENTION</strong><small>광명역 · AK플라자 광명</small></div>
         <div className="nav-links"><a href={`https://map.naver.com/p/search/${navQuery}`} target="_blank" rel="noreferrer"><Navigation size={17}/> 네이버 지도</a><a href={`https://map.kakao.com/link/search/${navQuery}`} target="_blank" rel="noreferrer"><MapPin size={17}/> 카카오맵</a></div>
@@ -89,7 +117,7 @@ export default function App() {
         {wedding.accounts.map((a) => <div className="accordion" key={a.side}><button className="accordion-head" aria-expanded={expanded === a.side} onClick={() => setExpanded(expanded === a.side ? null : a.side)}><span>{a.side} 계좌번호</span><ChevronDown size={18} className={expanded === a.side ? 'rotate' : ''}/></button>{expanded === a.side && <div className="accordion-content"><div><span>{a.owner}</span><small>{a.bank} {a.number || '계좌번호 등록 전'}</small></div><button disabled={!a.number} onClick={() => copy(`${a.bank} ${a.number}`, '계좌번호를 복사했습니다.')}><Copy size={15}/> 복사</button></div>}</div>)}
       </section>
       <section className="closing"><img className="closing-photo" src={wedding.closingPhoto} alt={`${wedding.groom} ${wedding.bride} 야외 웨딩 사진`} /><div className="closing-ornament">✳</div><p>기쁜 날, 소중한 발걸음을 기다립니다.</p><h2>Thank you</h2><span>{wedding.groom} & {wedding.bride}</span></section>
-      <footer><button onClick={share}><MessageCircle size={17} fill="currentColor"/> 카카오톡으로 전달하기</button><button onClick={() => copy(window.location.href, '청첩장 링크를 복사했습니다.')}><Link size={16}/> 청첩장 링크 복사하기</button></footer>
+      <footer className="share-footer"><button className="share-primary" onClick={share}><MessageCircle size={16} strokeWidth={1.4} aria-hidden="true"/> 카카오톡으로 전달하기</button><button onClick={() => copy(window.location.href, '청첩장 링크를 복사했습니다.')}><Link size={16} strokeWidth={1.4} aria-hidden="true"/> 청첩장 링크 복사하기</button></footer>
       {toast && <div className="toast" role="status"><Check size={16}/>{toast}</div>}
     </main>
   </div>;
